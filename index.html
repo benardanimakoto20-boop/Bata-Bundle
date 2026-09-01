@@ -3,14 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DataFlow - Data Bundles</title>
+
+    <title>DataFlow - Buy Data Bundles</title>
+
+    <!-- Paystack InlineJS -->
+    <script src="https://js.paystack.co/v2/inline.js"></script>
 
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: Arial, sans-serif;
+            font-family: Arial, Helvetica, sans-serif;
         }
 
         body {
@@ -20,26 +24,26 @@
 
         /* NAVBAR */
         nav {
-            background: white;
             height: 70px;
+            background: #ffffff;
             display: flex;
             align-items: center;
             justify-content: space-between;
             padding: 0 7%;
-            box-shadow: 0 2px 15px rgba(0,0,0,0.05);
+            box-shadow: 0 2px 15px rgba(0,0,0,0.06);
             position: sticky;
             top: 0;
             z-index: 100;
         }
 
         .logo {
-            font-size: 24px;
-            font-weight: bold;
+            font-size: 25px;
+            font-weight: 800;
             color: #1769ff;
         }
 
         .logo span {
-            color: #111827;
+            color: #172033;
         }
 
         nav ul {
@@ -48,17 +52,17 @@
             gap: 30px;
         }
 
-        nav ul li a {
-            text-decoration: none;
+        nav ul a {
             color: #555;
+            text-decoration: none;
             font-size: 15px;
         }
 
-        nav ul li a:hover {
+        nav ul a:hover {
             color: #1769ff;
         }
 
-        .login-btn {
+        .nav-btn {
             background: #1769ff;
             color: white;
             padding: 11px 20px;
@@ -69,63 +73,74 @@
 
         /* HERO */
         .hero {
-            background: linear-gradient(135deg, #1769ff, #5b8cff);
+            min-height: 480px;
+            background: linear-gradient(135deg, #1769ff, #5d8dff);
             color: white;
-            padding: 80px 7%;
+            padding: 70px 7%;
             display: flex;
-            justify-content: space-between;
             align-items: center;
+            justify-content: space-between;
             gap: 40px;
         }
 
-        .hero-text {
-            max-width: 600px;
+        .hero-content {
+            max-width: 620px;
         }
 
         .hero h1 {
-            font-size: 50px;
-            line-height: 1.1;
+            font-size: 52px;
+            line-height: 1.08;
             margin-bottom: 20px;
         }
 
         .hero p {
             font-size: 18px;
-            opacity: 0.9;
+            line-height: 1.7;
+            opacity: .92;
             margin-bottom: 30px;
         }
 
-        .hero-btn {
+        .hero-button {
             display: inline-block;
+            padding: 15px 25px;
             background: white;
             color: #1769ff;
-            padding: 14px 25px;
-            border-radius: 12px;
             text-decoration: none;
+            border-radius: 12px;
             font-weight: bold;
         }
 
-        .phone-box {
-            background: rgba(255,255,255,0.15);
-            border: 1px solid rgba(255,255,255,0.3);
-            width: 280px;
-            padding: 30px;
+        .hero-card {
+            width: 300px;
+            padding: 35px;
             border-radius: 25px;
+            background: rgba(255,255,255,.15);
+            border: 1px solid rgba(255,255,255,.25);
             text-align: center;
         }
 
-        .phone-box .icon {
-            font-size: 70px;
+        .hero-card .phone {
+            font-size: 75px;
             margin-bottom: 15px;
         }
 
-        /* SECTION */
+        .hero-card h2 {
+            margin-bottom: 8px;
+        }
+
+        .hero-card p {
+            font-size: 14px;
+            margin: 0;
+        }
+
+        /* GENERAL */
         .section {
-            padding: 60px 7%;
+            padding: 70px 7%;
         }
 
         .section-title {
             text-align: center;
-            margin-bottom: 35px;
+            margin-bottom: 40px;
         }
 
         .section-title h2 {
@@ -139,22 +154,22 @@
 
         /* NETWORKS */
         .networks {
+            max-width: 950px;
+            margin: auto;
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 20px;
-            max-width: 900px;
-            margin: auto;
         }
 
         .network {
             background: white;
-            padding: 25px;
+            padding: 28px;
             border-radius: 18px;
             text-align: center;
             cursor: pointer;
             border: 2px solid transparent;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.05);
-            transition: 0.3s;
+            box-shadow: 0 5px 20px rgba(0,0,0,.05);
+            transition: .3s;
         }
 
         .network:hover {
@@ -162,9 +177,14 @@
             border-color: #1769ff;
         }
 
+        .network.active {
+            border-color: #1769ff;
+            background: #f0f5ff;
+        }
+
         .network-icon {
-            font-size: 40px;
-            margin-bottom: 10px;
+            font-size: 45px;
+            margin-bottom: 12px;
         }
 
         .network h3 {
@@ -187,9 +207,9 @@
             background: white;
             padding: 30px;
             border-radius: 20px;
-            box-shadow: 0 5px 25px rgba(0,0,0,0.06);
+            box-shadow: 0 5px 25px rgba(0,0,0,.06);
             position: relative;
-            transition: 0.3s;
+            transition: .3s;
         }
 
         .bundle:hover {
@@ -198,8 +218,8 @@
 
         .popular {
             position: absolute;
-            top: 15px;
             right: 15px;
+            top: 15px;
             background: #e8f0ff;
             color: #1769ff;
             padding: 6px 10px;
@@ -215,33 +235,33 @@
         }
 
         .data-size {
-            font-size: 38px;
+            font-size: 40px;
             font-weight: bold;
-            margin-bottom: 8px;
         }
 
         .price {
-            font-size: 24px;
             color: #1769ff;
+            font-size: 25px;
             font-weight: bold;
+            margin-top: 5px;
         }
 
         .validity {
             color: #777;
-            margin: 12px 0 20px;
             font-size: 14px;
+            margin: 12px 0 20px;
         }
 
         .buy-btn {
             width: 100%;
             padding: 13px;
             border: none;
+            border-radius: 10px;
             background: #1769ff;
             color: white;
-            border-radius: 10px;
+            font-size: 15px;
             font-weight: bold;
             cursor: pointer;
-            font-size: 15px;
         }
 
         .buy-btn:hover {
@@ -249,16 +269,25 @@
         }
 
         /* CHECKOUT */
+        .checkout-area {
+            background: #eef3ff;
+        }
+
         .checkout {
+            max-width: 650px;
+            margin: auto;
             background: white;
-            max-width: 600px;
-            margin: 20px auto 60px;
             padding: 35px;
-            border-radius: 20px;
-            box-shadow: 0 5px 30px rgba(0,0,0,0.07);
+            border-radius: 22px;
+            box-shadow: 0 8px 35px rgba(0,0,0,.07);
         }
 
         .checkout h2 {
+            margin-bottom: 8px;
+        }
+
+        .checkout-subtitle {
+            color: #777;
             margin-bottom: 25px;
         }
 
@@ -269,8 +298,8 @@
         .form-group label {
             display: block;
             margin-bottom: 8px;
-            font-weight: bold;
             font-size: 14px;
+            font-weight: bold;
         }
 
         .form-group input,
@@ -281,6 +310,7 @@
             border-radius: 10px;
             outline: none;
             font-size: 15px;
+            background: white;
         }
 
         .form-group input:focus,
@@ -288,16 +318,56 @@
             border-color: #1769ff;
         }
 
-        .confirm {
+        .summary {
+            background: #f6f8fc;
+            border-radius: 12px;
+            padding: 18px;
+            margin: 20px 0;
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .summary-row:last-child {
+            margin-bottom: 0;
+        }
+
+        .summary-total {
+            font-size: 20px;
+            font-weight: bold;
+            color: #1769ff;
+        }
+
+        .pay-btn {
             width: 100%;
-            padding: 15px;
+            padding: 16px;
+            border: none;
+            border-radius: 11px;
             background: #1769ff;
             color: white;
-            border: none;
-            border-radius: 10px;
-            font-weight: bold;
             font-size: 16px;
+            font-weight: bold;
             cursor: pointer;
+        }
+
+        .pay-btn:hover {
+            background: #0d55d9;
+        }
+
+        .pay-btn:disabled {
+            opacity: .6;
+            cursor: not-allowed;
+        }
+
+        .notice {
+            font-size: 12px;
+            color: #777;
+            text-align: center;
+            margin-top: 15px;
+            line-height: 1.5;
         }
 
         /* FEATURES */
@@ -308,12 +378,14 @@
         }
 
         .feature {
-            text-align: center;
+            background: white;
             padding: 30px;
+            border-radius: 18px;
+            text-align: center;
         }
 
         .feature-icon {
-            font-size: 40px;
+            font-size: 42px;
             margin-bottom: 15px;
         }
 
@@ -326,8 +398,8 @@
         footer {
             background: #111827;
             color: white;
-            padding: 40px 7%;
             text-align: center;
+            padding: 40px 7%;
         }
 
         footer p {
@@ -336,7 +408,7 @@
         }
 
         /* MOBILE */
-        @media (max-width: 768px) {
+        @media(max-width: 768px) {
 
             nav {
                 padding: 0 5%;
@@ -347,13 +419,22 @@
             }
 
             .hero {
-                padding: 60px 5%;
-                text-align: center;
+                padding: 55px 5%;
                 flex-direction: column;
+                text-align: center;
             }
 
             .hero h1 {
                 font-size: 38px;
+            }
+
+            .hero-card {
+                width: 100%;
+                max-width: 300px;
+            }
+
+            .section {
+                padding: 50px 5%;
             }
 
             .networks,
@@ -362,8 +443,8 @@
                 grid-template-columns: 1fr;
             }
 
-            .section {
-                padding: 45px 5%;
+            .checkout {
+                padding: 25px;
             }
         }
     </style>
@@ -371,219 +452,923 @@
 
 <body>
 
-    <!-- NAVBAR -->
-    <nav>
-        <div class="logo">
-            Data<span>Flow</span>
+<!-- NAVBAR -->
+<nav>
+
+    <div class="logo">
+        Data<span>Flow</span>
+    </div>
+
+    <ul>
+        <li><a href="#">Home</a></li>
+        <li><a href="#bundles">Bundles</a></li>
+        <li><a href="#checkout">Buy Data</a></li>
+        <li><a href="#help">Help</a></li>
+    </ul>
+
+    <a href="#checkout" class="nav-btn">
+        Buy Data
+    </a>
+
+</nav>
+
+
+<!-- HERO -->
+<section class="hero">
+
+    <div class="hero-content">
+
+        <h1>
+            Affordable Data.<br>
+            Anytime.
+        </h1>
+
+        <p>
+            Buy your data bundle quickly and securely.
+            Select your network, choose your bundle,
+            pay with Paystack and receive your order details.
+        </p>
+
+        <a href="#bundles" class="hero-button">
+            View Bundles
+        </a>
+
+    </div>
+
+    <div class="hero-card">
+
+        <div class="phone">📱</div>
+
+        <h2>Stay Connected</h2>
+
+        <p>
+            Fast • Simple • Convenient
+        </p>
+
+    </div>
+
+</section>
+
+
+<!-- NETWORKS -->
+<section class="section">
+
+    <div class="section-title">
+
+        <h2>Choose Your Network</h2>
+
+        <p>
+            Select your preferred network
+        </p>
+
+    </div>
+
+    <div class="networks">
+
+        <div class="network active" onclick="selectNetwork('MTN', this)">
+            <div class="network-icon">🟡</div>
+            <h3>MTN</h3>
+            <p>MTN Ghana</p>
         </div>
 
-        <ul>
-            <li><a href="#">Home</a></li>
-            <li><a href="#bundles">Bundles</a></li>
-            <li><a href="#checkout">Buy Data</a></li>
-            <li><a href="#help">Help</a></li>
-        </ul>
-
-        <a href="#" class="login-btn">Login</a>
-    </nav>
-
-
-    <!-- HERO -->
-    <section class="hero">
-
-        <div class="hero-text">
-            <h1>Affordable Data. Anytime.</h1>
-
-            <p>
-                Buy your favorite data bundles quickly and easily.
-                Choose your network and get connected.
-            </p>
-
-            <a href="#bundles" class="hero-btn">
-                View Bundles
-            </a>
+        <div class="network" onclick="selectNetwork('Telecel', this)">
+            <div class="network-icon">🔴</div>
+            <h3>Telecel</h3>
+            <p>Telecel Ghana</p>
         </div>
 
-        <div class="phone-box">
-            <div class="icon">📱</div>
-            <h2>Stay Connected</h2>
-            <p>Fast, simple and convenient.</p>
+        <div class="network" onclick="selectNetwork('AirtelTigo', this)">
+            <div class="network-icon">🔵</div>
+            <h3>AirtelTigo</h3>
+            <p>AirtelTigo Ghana</p>
         </div>
 
-    </section>
+    </div>
+
+</section>
 
 
-    <!-- NETWORKS -->
-    <section class="section">
+<!-- BUNDLES -->
+<section class="section" id="bundles">
 
-        <div class="section-title">
-            <h2>Choose Your Network</h2>
-            <p>Select a network to view available bundles</p>
-        </div>
+    <div class="section-title">
 
-        <div class="networks">
+        <h2>Popular Data Bundles</h2>
 
-            <div class="network">
-                <div class="network-icon">🟡</div>
-                <h3>MTN</h3>
-                <p>MTN Ghana</p>
+        <p>
+            Select a bundle to continue
+        </p>
+
+    </div>
+
+    <div class="bundles">
+
+        <!-- 1GB -->
+        <div class="bundle">
+
+            <h3>Starter Bundle</h3>
+
+            <div class="data-size">
+                1GB
             </div>
 
-            <div class="network">
-                <div class="network-icon">🔴</div>
-                <h3>Telecel</h3>
-                <p>Telecel Ghana</p>
+            <div class="price">
+                ₵10
             </div>
 
-            <div class="network">
-                <div class="network-icon">🔵</div>
-                <h3>AirtelTigo</h3>
-                <p>AirtelTigo Ghana</p>
+            <div class="validity">
+                Valid for 7 days
             </div>
 
-        </div>
-
-    </section>
-
-
-    <!-- BUNDLES -->
-    <section class="section" id="bundles">
-
-        <div class="section-title">
-            <h2>Popular Data Bundles</h2>
-            <p>Choose a bundle that works for you</p>
-        </div>
-
-        <div class="bundles">
-
-            <div class="bundle">
-                <h3>Starter Bundle</h3>
-                <div class="data-size">1GB</div>
-                <div class="price">₵6</div>
-                <div class="validity">Valid for 7 days</div>
-                <button class="buy-btn">Buy Now</button>
-            </div>
-
-
-            <div class="bundle">
-
-                <span class="popular">POPULAR</span>
-
-                <h3>Standard Bundle</h3>
-                <div class="data-size">5GB</div>
-                <div class="price">₵16</div>
-                <div class="validity">Valid for 30 days</div>
-
-                <button class="buy-btn">Buy Now</button>
-
-            </div>
-
-
-            <div class="bundle">
-
-                <h3>Premium Bundle</h3>
-                <div class="data-size">10GB</div>
-                <div class="price">₵45</div>
-                <div class="validity">Valid for 30 days</div>
-
-                <button class="buy-btn">Buy Now</button>
-
-            </div>
-
-        </div>
-
-    </section>
-
-
-    <!-- CHECKOUT -->
-    <section class="section" id="checkout">
-
-        <div class="checkout">
-
-            <h2>🛒 Buy Data Bundle</h2>
-
-            <div class="form-group">
-                <label>Network</label>
-
-                <select>
-                    <option>Select Network</option>
-                    <option>MTN</option>
-                    <option>Telecel</option>
-                    <option>AirtelTigo</option>
-                </select>
-            </div>
-
-            <div class="form-group">
-                <label>Phone Number</label>
-
-                <input
-                    type="tel"
-                    placeholder="05XXXXXXXX"
-                >
-            </div>
-
-            <div class="form-group">
-                <label>Select Bundle</label>
-
-                <select>
-                    <option>Select Bundle</option>
-                    <option>1GB - ₵6</option>
-                    <option>5GB - ₵16</option>
-                    <option>10GB - ₵45</option>
-                </select>
-            </div>
-
-            <button class="confirm">
-                Confirm Purchase
+            <button
+                class="buy-btn"
+                onclick="chooseBundle('1GB', 10)">
+                Buy Now
             </button>
 
         </div>
 
-    </section>
 
+        <!-- 5GB -->
+        <div class="bundle">
 
-    <!-- FEATURES -->
-    <section class="section" id="help">
+            <span class="popular">
+                POPULAR
+            </span>
 
-        <div class="section-title">
-            <h2>Why Choose DataFlow?</h2>
+            <h3>Standard Bundle</h3>
+
+            <div class="data-size">
+                5GB
+            </div>
+
+            <div class="price">
+                ₵35
+            </div>
+
+            <div class="validity">
+                Valid for 30 days
+            </div>
+
+            <button
+                class="buy-btn"
+                onclick="chooseBundle('5GB', 35)">
+                Buy Now
+            </button>
+
         </div>
 
-        <div class="features">
 
-            <div class="feature">
-                <div class="feature-icon">⚡</div>
-                <h3>Fast</h3>
-                <p>Quick and easy bundle purchases.</p>
+        <!-- 10GB -->
+        <div class="bundle">
+
+            <h3>Premium Bundle</h3>
+
+            <div class="data-size">
+                10GB
             </div>
 
-            <div class="feature">
-                <div class="feature-icon">🔒</div>
-                <h3>Secure</h3>
-                <p>Your information stays protected.</p>
+            <div class="price">
+                ₵60
             </div>
 
-            <div class="feature">
-                <div class="feature-icon">💰</div>
-                <h3>Affordable</h3>
-                <p>Choose bundles that fit your budget.</p>
+            <div class="validity">
+                Valid for 30 days
             </div>
+
+            <button
+                class="buy-btn"
+                onclick="chooseBundle('10GB', 60)">
+                Buy Now
+            </button>
 
         </div>
 
-    </section>
+    </div>
+
+</section>
 
 
-    <!-- FOOTER -->
-    <footer>
+<!-- CHECKOUT -->
+<section class="section checkout-area" id="checkout">
 
-        <h2>DataFlow</h2>
+    <div class="checkout">
 
-        <p>
-            © 2026 DataFlow. All rights reserved.
+        <h2>🛒 Complete Your Order</h2>
+
+        <p class="checkout-subtitle">
+            Enter your details and pay securely.
         </p>
 
-    </footer>
+
+        <!-- NETWORK -->
+        <div class="form-group">
+
+            <label>
+                Network
+            </label>
+
+            <select id="network">
+
+                <option value="MTN">
+                    MTN
+                </option>
+
+                <option value="Telecel">
+                    Telecel
+                </option>
+
+                <option value="AirtelTigo">
+                    AirtelTigo
+                </option>
+
+            </select>
+
+        </div>
+
+
+        <!-- PHONE -->
+        <div class="form-group">
+
+            <label>
+                Phone Number
+            </label>
+
+            <input
+                type="tel"
+                id="phone"
+                placeholder="05XXXXXXXX"
+                maxlength="10"
+            >
+
+        </div>
+
+
+        <!-- EMAIL -->
+        <div class="form-group">
+
+            <label>
+                Email Address
+            </label>
+
+            <input
+                type="email"
+                id="email"
+                placeholder="you@example.com"
+            >
+
+        </div>
+
+
+        <!-- BUNDLE -->
+        <div class="form-group">
+
+            <label>
+                Data Bundle
+            </label>
+
+            <select id="bundle">
+
+                <option value="">
+                    Select Bundle
+                </option>
+
+                <option value="1GB|10">
+                    1GB - ₵10
+                </option>
+
+                <option value="5GB|35">
+                    5GB - ₵35
+                </option>
+
+                <option value="10GB|60">
+                    10GB - ₵60
+                </option>
+
+            </select>
+
+        </div>
+
+
+        <!-- SUMMARY -->
+        <div class="summary">
+
+            <div class="summary-row">
+
+                <span>
+                    Network
+                </span>
+
+                <strong id="summaryNetwork">
+                    MTN
+                </strong>
+
+            </div>
+
+
+            <div class="summary-row">
+
+                <span>
+                    Bundle
+                </span>
+
+                <strong id="summaryBundle">
+                    Not selected
+                </strong>
+
+            </div>
+
+
+            <div class="summary-row">
+
+                <span>
+                    Total
+                </span>
+
+                <strong
+                    class="summary-total"
+                    id="summaryPrice">
+                    ₵0.00
+                </strong>
+
+            </div>
+
+        </div>
+
+
+        <!-- PAY -->
+        <button
+            class="pay-btn"
+            id="payButton"
+            onclick="payWithPaystack()">
+
+            Pay with Paystack
+
+        </button>
+
+
+        <p class="notice">
+            You will be redirected to WhatsApp after a
+            successful payment with your order details.
+        </p>
+
+    </div>
+
+</section>
+
+
+<!-- FEATURES -->
+<section class="section" id="help">
+
+    <div class="section-title">
+
+        <h2>
+            Why Choose DataFlow?
+        </h2>
+
+    </div>
+
+
+    <div class="features">
+
+        <div class="feature">
+
+            <div class="feature-icon">
+                ⚡
+            </div>
+
+            <h3>
+                Fast
+            </h3>
+
+            <p>
+                Quick and simple ordering process.
+            </p>
+
+        </div>
+
+
+        <div class="feature">
+
+            <div class="feature-icon">
+                🔒
+            </div>
+
+            <h3>
+                Secure Payment
+            </h3>
+
+            <p>
+                Payments are handled through Paystack.
+            </p>
+
+        </div>
+
+
+        <div class="feature">
+
+            <div class="feature-icon">
+                💰
+            </div>
+
+            <h3>
+                Affordable
+            </h3>
+
+            <p>
+                Choose the bundle that fits your budget.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- FOOTER -->
+<footer>
+
+    <h2>
+        DataFlow
+    </h2>
+
+    <p>
+        © 2026 DataFlow. All rights reserved.
+    </p>
+
+</footer>
+
+
+<script>
+
+    /*
+     * ============================================
+     * SETTINGS
+     * ============================================
+     */
+
+    // Your Paystack PUBLIC TEST key
+    const PAYSTACK_PUBLIC_KEY =
+        "pk_test_b7fdd9e02f5728f5a4e5a6541e63e9e5716add0e";
+
+
+    // IMPORTANT:
+    // Replace this with YOUR WhatsApp number.
+    // Ghana example:
+    // 233241234567
+    //
+    // Do NOT add the + sign.
+    const WHATSAPP_NUMBER =
+        "233592195215"
+
+
+    /*
+     * ============================================
+     * ORDER VARIABLES
+     * ============================================
+     */
+
+    let selectedNetwork = "MTN";
+    let selectedBundle = "";
+    let selectedPrice = 0;
+
+
+    /*
+     * ============================================
+     * SELECT NETWORK
+     * ============================================
+     */
+
+    function selectNetwork(network, element) {
+
+        selectedNetwork = network;
+
+        document.getElementById("network").value =
+            network;
+
+        document.getElementById("summaryNetwork").innerText =
+            network;
+
+
+        document
+            .querySelectorAll(".network")
+            .forEach(card => {
+
+                card.classList.remove("active");
+
+            });
+
+
+        element.classList.add("active");
+
+    }
+
+
+    /*
+     * ============================================
+     * SELECT BUNDLE
+     * ============================================
+     */
+
+    function chooseBundle(bundle, price) {
+
+        selectedBundle = bundle;
+        selectedPrice = price;
+
+
+        document.getElementById("bundle").value =
+            bundle + "|" + price;
+
+
+        updateSummary();
+
+
+        document
+            .getElementById("checkout")
+            .scrollIntoView({
+                behavior: "smooth"
+            });
+
+    }
+
+
+    /*
+     * ============================================
+     * UPDATE SUMMARY
+     * ============================================
+     */
+
+    function updateSummary() {
+
+        const network =
+            document.getElementById("network").value;
+
+        const bundleValue =
+            document.getElementById("bundle").value;
+
+
+        document.getElementById("summaryNetwork").innerText =
+            network;
+
+
+        if (bundleValue) {
+
+            const parts =
+                bundleValue.split("|");
+
+            selectedBundle = parts[0];
+            selectedPrice = Number(parts[1]);
+
+
+            document.getElementById("summaryBundle").innerText =
+                selectedBundle;
+
+            document.getElementById("summaryPrice").innerText =
+                "₵" + selectedPrice.toFixed(2);
+
+        } else {
+
+            selectedBundle = "";
+            selectedPrice = 0;
+
+            document.getElementById("summaryBundle").innerText =
+                "Not selected";
+
+            document.getElementById("summaryPrice").innerText =
+                "₵0.00";
+
+        }
+
+    }
+
+
+    /*
+     * ============================================
+     * LISTEN FOR FORM CHANGES
+     * ============================================
+     */
+
+    document
+        .getElementById("network")
+        .addEventListener("change", function() {
+
+            selectedNetwork = this.value;
+
+            updateSummary();
+
+        });
+
+
+    document
+        .getElementById("bundle")
+        .addEventListener("change", function() {
+
+            updateSummary();
+
+        });
+
+
+    /*
+     * ============================================
+     * PAYSTACK PAYMENT
+     * ============================================
+     */
+
+    async function payWithPaystack() {
+
+        const network =
+            document.getElementById("network").value;
+
+        const phone =
+            document.getElementById("phone").value.trim();
+
+        const email =
+            document.getElementById("email").value.trim();
+
+        const bundleValue =
+            document.getElementById("bundle").value;
+
+
+        /*
+         * VALIDATION
+         */
+
+        if (!phone) {
+
+            alert("Please enter the phone number.");
+
+            return;
+
+        }
+
+
+        if (!email) {
+
+            alert("Please enter your email address.");
+
+            return;
+
+        }
+
+
+        if (!bundleValue) {
+
+            alert("Please select a data bundle.");
+
+            return;
+
+        }
+
+
+        const parts =
+            bundleValue.split("|");
+
+
+        const bundle =
+            parts[0];
+
+        const price =
+            Number(parts[1]);
+
+
+        /*
+         * Basic phone validation
+         */
+
+        if (!/^0[0-9]{9}$/.test(phone)) {
+
+            alert(
+                "Please enter a valid Ghana phone number."
+            );
+
+            return;
+
+        }
+
+
+        /*
+         * Generate a unique order reference.
+         */
+
+        const reference =
+            "DATA-" +
+            Date.now() +
+            "-" +
+            Math.floor(
+                Math.random() * 10000
+            );
+
+
+        /*
+         * Disable button
+         */
+
+        const payButton =
+            document.getElementById("payButton");
+
+        payButton.disabled = true;
+
+        payButton.innerText =
+            "Opening Paystack...";
+
+
+        /*
+         * Paystack V2
+         *
+         * Amount is in the smallest unit.
+         * For GHS, ₵10 = 1000 pesewas.
+         */
+
+        try {
+
+            const popup =
+                new PaystackPop();
+
+
+            await popup.checkout({
+
+                key: PAYSTACK_PUBLIC_KEY,
+
+                email: email,
+
+                amount: price * 100,
+
+                currency: "GHS",
+
+                reference: reference,
+
+                phone: phone,
+
+                metadata: {
+
+                    custom_fields: [
+
+                        {
+                            display_name:
+                                "Network",
+
+                            variable_name:
+                                "network",
+
+                            value:
+                                network
+                        },
+
+                        {
+                            display_name:
+                                "Phone Number",
+
+                            variable_name:
+                                "phone_number",
+
+                            value:
+                                phone
+                        },
+
+                        {
+                            display_name:
+                                "Data Bundle",
+
+                            variable_name:
+                                "data_bundle",
+
+                            value:
+                                bundle
+                        }
+
+                    ]
+
+                },
+
+
+                /*
+                 * PAYMENT SUCCESS
+                 */
+
+                onSuccess: function(transaction) {
+
+                    payButton.disabled = false;
+
+                    payButton.innerText =
+                        "Pay with Paystack";
+
+
+                    /*
+                     * Build WhatsApp message.
+                     */
+
+                    const message =
+
+                        "Hello DataFlow 👋%0A%0A" +
+
+                        "*NEW DATA BUNDLE ORDER*%0A" +
+
+                        "━━━━━━━━━━━━━━%0A" +
+
+                        "📱 Network: " +
+                        encodeURIComponent(network) +
+                        "%0A" +
+
+                        "📞 Phone: " +
+                        encodeURIComponent(phone) +
+                        "%0A" +
+
+                        "📦 Bundle: " +
+                        encodeURIComponent(bundle) +
+                        "%0A" +
+
+                        "💰 Amount: ₵" +
+                        price.toFixed(2) +
+                        "%0A" +
+
+                        "🧾 Reference: " +
+                        encodeURIComponent(
+                            transaction.reference
+                        ) +
+                        "%0A" +
+
+                        "✅ Payment: SUCCESSFUL%0A" +
+
+                        "━━━━━━━━━━━━━━%0A%0A" +
+
+                        "Please process my data bundle.";
+
+
+                    /*
+                     * Open WhatsApp.
+                     */
+
+                    const whatsappURL =
+                        "https://wa.me/" +
+                        WHATSAPP_NUMBER +
+                        "?text=" +
+                        message;
+
+
+                    window.location.href =
+                        whatsappURL;
+
+                },
+
+
+                /*
+                 * PAYMENT CANCELLED
+                 */
+
+                onCancel: function() {
+
+                    payButton.disabled = false;
+
+                    payButton.innerText =
+                        "Pay with Paystack";
+
+                    alert(
+                        "Payment was cancelled."
+                    );
+
+                },
+
+
+                /*
+                 * PAYMENT ERROR
+                 */
+
+                onError: function(error) {
+
+                    console.error(error);
+
+                    payButton.disabled = false;
+
+                    payButton.innerText =
+                        "Pay with Paystack";
+
+                    alert(
+                        "There was a problem opening Paystack."
+                    );
+
+                }
+
+            });
+
+        } catch (error) {
+
+            console.error(error);
+
+            payButton.disabled = false;
+
+            payButton.innerText =
+                "Pay with Paystack";
+
+            alert(
+                "Unable to start payment. Please try again."
+            );
+
+        }
+
+    }
+
+</script>
 
 </body>
 </html>
